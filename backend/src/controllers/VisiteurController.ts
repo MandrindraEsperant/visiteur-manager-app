@@ -28,6 +28,22 @@ export class VisiteurController {
         res.json(data);
     }
 
+     static async getOne(req: Request, res: Response) {
+        const { id } = req.params;
+        try {
+            const visiteur = await visiteurRepository.findOneBy({ id: Number(id) });
+            if (!visiteur) {
+                return res.status(404).json({ message: "Visiteur non trouvé" });
+            }
+            // On renvoie l'objet avec le calcul du tarif
+            res.json({
+                ...visiteur,
+                tarif: Number(visiteur.nombre_de_jours) * Number(visiteur.tarif_journalier)
+            });
+        } catch (error) {
+            res.status(500).json({ message: "Erreur lors de la récupération" });
+        }
+    }
     // Modifier un visiteur
     static async update(req: Request, res: Response) {
         const { id } = req.params;
