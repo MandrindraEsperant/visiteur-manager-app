@@ -1,10 +1,12 @@
 import express from "express";
 import { AppDataSource } from "./data-source";
+import visiteurRoutes from "./routes/visiteurRoutes";
 
 const app = express();
 app.use(express.json());
+app.use("/api/visiteurs", visiteurRoutes);
 
-const PORT = 3000;
+const PORT = 3001;
 
 AppDataSource.initialize()
     .then(() => {
